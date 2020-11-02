@@ -7,14 +7,48 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class FolderOpenHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "tangochou.db";
-    private static String SQL_CREATE_ENTRIES = "CREATE TABLE folder (" +
-            "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+    // テーブル名
+    public static final String TABLE_NAME_FOLDER = "folder";
+    public static final String TABLE_NAME_SERIES = "series";
+    public static final String TABLE_NAME_CARD = "card";
+    public static final String TABLE_NAME_HISTORY_CARD = "hist_card";
+    public static final String TABLE_NAME_HISTORY_SERIES = "hist_series";
+    // テーブル定義
+    private static String SQL_CREATE_TABLE_folder = "CREATE TABLE " + TABLE_NAME_FOLDER + "(" +
+            "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "path VARCHAR(100) NOT NULL UNIQUE, " +
             "name VARCHAR(100) NOT NULL, " +
             "directory VARCHAR(100), " +
             "parent_id INTEGER" +
             ")";
-    private static String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS folder";
+    private static String SQL_CREATE_TABLE_series = "CREATE TABLE " + TABLE_NAME_SERIES + "(" +
+            "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "path VARCHAR(100) NOT NULL UNIQUE, " +
+            "name VARCHAR(100) NOT NULL, " +
+            "directory VARCHAR(100) NOT NULL, " +
+            "parent_id INTEGER NOT NULL" +
+            ")";
+    private static String SQL_CREATE_TABLE_card = "CREATE TABLE " + TABLE_NAME_CARD + "(" +
+            "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "head VARCHAR(100) NOT NULL, " +
+            "tail VARCHAR(100), " +
+            "directory VARCHAR(100) NOT NULL, " +
+            "parent_id INTEGER NOT NULL" +
+            ")";
+    private static String SQL_CREATE_TABLE_hist_card = "CREATE TABLE " + TABLE_NAME_HISTORY_CARD + " (" +
+            "timestamp VARCHAR(19) NOT NULL, " +
+            "card_id VARCHAR(100) NOT NULL, " +
+            "hist_series_id VARCHAR(100) NOT NULL, " +
+            "correct INTEGER NOT NULL DEFAULT 0 check(correct = 0 or correct = 1)" +
+            ")";
+    private static String SQL_CREATE_TABLE_hist_series = "CREATE TABLE " + TABLE_NAME_HISTORY_SERIES + " (" +
+            "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "timestamp VARCHAR(19) NOT NULL, " +
+            "series_id INTEGER NOT NULL, " +
+            "rate real NOT NULL DEFAULT 0" +
+            ")";
+    // テーブル削除
+    private static String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS ";
 
     FolderOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -23,7 +57,11 @@ public class FolderOpenHelper extends SQLiteOpenHelper {
     // DB作成時はSQL_CREATE_ENTRIESを実行
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_ENTRIES);
+        db.execSQL(SQL_CREATE_TABLE_folder);
+        db.execSQL(SQL_CREATE_TABLE_series);
+        db.execSQL(SQL_CREATE_TABLE_card);
+        db.execSQL(SQL_CREATE_TABLE_hist_card);
+        db.execSQL(SQL_CREATE_TABLE_hist_series);
 
         // ダミーデータを挿入
         String SQL_DUMMY = "insert into folder(path, name) values('pathaaa', 'nameAAA'), ('pathbbb', 'nameBBB'), ('pathccc', 'nameCCC'), ('pathddd', 'nameDDD')";
@@ -36,7 +74,11 @@ public class FolderOpenHelper extends SQLiteOpenHelper {
     // バージョン更新時の動作
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(SQL_DELETE_ENTRIES);
+        db.execSQL(SQL_DELETE_ENTRIES + TABLE_NAME_FOLDER);
+        db.execSQL(SQL_DELETE_ENTRIES + TABLE_NAME_SERIES);
+        db.execSQL(SQL_DELETE_ENTRIES + TABLE_NAME_CARD);
+        db.execSQL(SQL_DELETE_ENTRIES + TABLE_NAME_HISTORY_CARD);
+        db.execSQL(SQL_DELETE_ENTRIES + TABLE_NAME_HISTORY_SERIES);
         onCreate(db);
     }
 
