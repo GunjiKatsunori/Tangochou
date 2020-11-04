@@ -26,8 +26,6 @@ public class FolderListPresenter {
         Cursor cursor = db.query("folder", new String[]{"id", "path", "name", "directory", "parent_id"}, null, null, null, null, null);
         cursor.moveToFirst();
 
-        //Log.d("", cursor.);
-
         for (int i=0; i<cursor.getCount(); i++) {
             FolderModel folder = new FolderModel(
                     cursor.getInt(0),
@@ -42,6 +40,5 @@ public class FolderListPresenter {
         cursor.close();
 
         return folders;
-
     }
 }
