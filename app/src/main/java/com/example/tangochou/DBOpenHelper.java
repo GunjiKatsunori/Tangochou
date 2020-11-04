@@ -4,8 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class FolderOpenHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
+public class DBOpenHelper extends SQLiteOpenHelper {
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "tangochou.db";
     // テーブル名
     public static final String TABLE_NAME_FOLDER = "folder";
@@ -15,21 +15,21 @@ public class FolderOpenHelper extends SQLiteOpenHelper {
     public static final String TABLE_NAME_HISTORY_SERIES = "hist_series";
     // テーブル定義
     private static String SQL_CREATE_TABLE_folder = "CREATE TABLE " + TABLE_NAME_FOLDER + "(" +
-            "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "path VARCHAR(100) NOT NULL UNIQUE, " +
             "name VARCHAR(100) NOT NULL, " +
             "directory VARCHAR(100), " +
             "parent_id INTEGER" +
             ")";
     private static String SQL_CREATE_TABLE_series = "CREATE TABLE " + TABLE_NAME_SERIES + "(" +
-            "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "path VARCHAR(100) NOT NULL UNIQUE, " +
             "name VARCHAR(100) NOT NULL, " +
             "directory VARCHAR(100) NOT NULL, " +
             "parent_id INTEGER NOT NULL" +
             ")";
     private static String SQL_CREATE_TABLE_card = "CREATE TABLE " + TABLE_NAME_CARD + "(" +
-            "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "head VARCHAR(100) NOT NULL, " +
             "tail VARCHAR(100), " +
             "directory VARCHAR(100) NOT NULL, " +
@@ -42,7 +42,7 @@ public class FolderOpenHelper extends SQLiteOpenHelper {
             "correct INTEGER NOT NULL DEFAULT 0 check(correct = 0 or correct = 1)" +
             ")";
     private static String SQL_CREATE_TABLE_hist_series = "CREATE TABLE " + TABLE_NAME_HISTORY_SERIES + " (" +
-            "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "timestamp VARCHAR(19) NOT NULL, " +
             "series_id INTEGER NOT NULL, " +
             "rate real NOT NULL DEFAULT 0" +
@@ -50,7 +50,7 @@ public class FolderOpenHelper extends SQLiteOpenHelper {
     // テーブル削除
     private static String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS ";
 
-    FolderOpenHelper(Context context) {
+    public DBOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
