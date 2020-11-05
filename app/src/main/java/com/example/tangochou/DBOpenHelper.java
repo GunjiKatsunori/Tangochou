@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBOpenHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "tangochou.db";
     // テーブル名
     public static final String TABLE_NAME_FOLDER = "folder";
@@ -64,9 +64,11 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_TABLE_hist_series);
 
         // ダミーデータを挿入
-        String SQL_DUMMY = "insert into folder(path, name) values('pathaaa', 'nameAAA'), ('pathbbb', 'nameBBB'), ('pathccc', 'nameCCC'), ('pathddd', 'nameDDD')";
+        String SQL_DUMMY = "insert into folder(path, name) values('nameAAA', 'nameAAA'), ('nameBBB', 'nameBBB'), ('nameCCC', 'nameCCC'), ('nameDDD', 'nameDDD')";
+        String SQL_DUMMY2 = "insert into folder(path, name, directory) values('nameAAA/aaa', 'aaa', 'nameAAA'), ('nameAAA/bbb', 'bbb', 'nameAAA')";
 
         db.execSQL(SQL_DUMMY);
+        db.execSQL(SQL_DUMMY2);
 
         // ダミーデータここまで
     }
