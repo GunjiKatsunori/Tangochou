@@ -1,6 +1,7 @@
 package com.example.tangochou;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 public class FolderListActivity extends AppCompatActivity {
     // 表示するデータのリスト
     private static ArrayList<FolderModel> folders = new ArrayList<>();
+    // ディレクトリ
+    private String directory;
 
     FolderListAdapter adapter;
     FolderListPresenter folderListPresenter;
@@ -25,9 +28,19 @@ public class FolderListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.folder_list);
 
+        createView(directory);
+    }
+
+    /**
+     * 与えられたdirectory以下のデータ一覧を取得して表示
+     * @param directory
+     */
+    public void createView(String directory) {
+        this.directory = directory;
+
         // リスト表示のためのデータを呼び出す
         folderListPresenter = new FolderListPresenter(this);
-        folders = folderListPresenter.openFolderList(null);
+        folders = folderListPresenter.openFolderList(directory);
 
         // フォルダリストを表示する
         RecyclerView folderRecyclerView = findViewById(R.id.folder_recycler_view);
@@ -37,24 +50,5 @@ public class FolderListActivity extends AppCompatActivity {
         adapter = new FolderListAdapter(this, folders);
         folderRecyclerView.setAdapter(adapter);
 
-        /*
-        ItemTouchHelper ith = new ItemTouchHelper(
-                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
-                    // 長押しでフォルダ名変更
-                    @Override
-                    public boolean onLongClick(RecyclerView recyclerView) {
-                        // positionを取得
-                        final int position = holder.getAdapterPosition();
-                        String selectedText = dataset.get(position);
-
-
-
-                        return true;
-                    }
-
-                });
-
-        ith.attachToRecyclerView(folderRecyclerView);
-        */
     }
 }
