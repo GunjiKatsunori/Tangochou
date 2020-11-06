@@ -1,19 +1,19 @@
 package com.example.model;
 
 public class HistSeriesModel {
-    private int id;
+    private Integer id;
     private String timestamp;
-    private int series_id;
-    private double rate;
+    private Integer series_id;
+    private Double rate;
 
-    public HistSeriesModel(int id, String timestamp, int series_id, double rate) {
+    public HistSeriesModel(Integer id, String timestamp, Integer series_id, Double rate) {
         this.id = id;
         this.timestamp = timestamp;
         this.series_id = series_id;
         this.rate = rate;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -21,11 +21,11 @@ public class HistSeriesModel {
         return timestamp;
     }
 
-    public int getSeriesId() {
+    public Integer getSeriesId() {
         return series_id;
     }
 
-    public double getRate() {
+    public Double getRate() {
         return rate;
     }
 }

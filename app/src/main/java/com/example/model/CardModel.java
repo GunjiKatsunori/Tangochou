@@ -1,13 +1,13 @@
 package com.example.model;
 
 public class CardModel {
-    private int id;
+    private Integer id;
     private String head;
     private String tail;
     private String directory;
-    private int series_id;
+    private Integer series_id;
 
-    public CardModel(int id, String head, String tail, String directory, int series_id) {
+    public CardModel(Integer id, String head, String tail, String directory, Integer series_id) {
         this.id = id;
         this.head = head;
         this.tail = tail;
@@ -15,7 +15,7 @@ public class CardModel {
         this.series_id = series_id;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -31,7 +31,7 @@ public class CardModel {
         return directory;
     }
 
-    public int getSeriesId() {
+    public Integer getSeriesId() {
         return series_id;
     }
 }

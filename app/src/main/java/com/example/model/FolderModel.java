@@ -2,13 +2,13 @@ package com.example.model;
 
 public class FolderModel {
     // Folderのカラム
-    private int id;
+    private Integer id;
     private String path;
     private String name;
     private String directory;
-    private int parent_id;
+    private Integer parent_id;
 
-    public FolderModel(int id, String path, String name, String directory, int parent_id) {
+    public FolderModel(Integer id, String path, String name, String directory, Integer parent_id) {
         this.id = id;
         this.path = path;
         this.name = name;
@@ -16,7 +16,7 @@ public class FolderModel {
         this. parent_id = parent_id;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -32,7 +32,7 @@ public class FolderModel {
         return directory;
     }
 
-    public int getParentId() {
+    public Integer getParentId() {
         return parent_id;
     }
 

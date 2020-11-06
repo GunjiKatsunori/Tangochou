@@ -3,10 +3,10 @@ package com.example.model;
 public class HistCardModel {
     private String timestamp;
     private String card_id;
-    private int hist_series_id;
-    private int correct;
+    private Integer hist_series_id;
+    private Integer correct;
 
-    public HistCardModel(String timestamp, String card_id, int hist_series_id, int correct) {
+    public HistCardModel(String timestamp, String card_id, Integer hist_series_id, Integer correct) {
         this.timestamp = timestamp;
         this.card_id = card_id;
         this.hist_series_id = hist_series_id;
@@ -21,11 +21,11 @@ public class HistCardModel {
         return card_id;
     }
 
-    public int getHistSeriesId() {
+    public Integer getHistSeriesId() {
         return hist_series_id;
     }
 
-    public int getCorrect() {
+    public Integer getCorrect() {
         return correct;
     }
 }
