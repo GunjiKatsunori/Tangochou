@@ -22,6 +22,7 @@ public class FolderListActivity extends AppCompatActivity {
     private static ArrayList<FolderModel> folders = new ArrayList<>();
     // ディレクトリ
     private String directory;
+    private Integer id=0;
 
     FolderListAdapter adapter;
     FolderListPresenter folderListPresenter;
@@ -31,19 +32,19 @@ public class FolderListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.folder_list);
 
-        createView(directory);
+        createView(id);
     }
 
     /**
      * 与えられたdirectory以下のデータ一覧を取得して表示
-     * @param directory
+     * @param id
      */
-    public void createView(String directory) {
-        this.directory = directory;
+    public void createView(Integer id) {
+        this.id = id;
 
         // リスト表示のためのデータを呼び出す
         folderListPresenter = new FolderListPresenter(this);
-        folders = folderListPresenter.openFolderList(directory);
+        folders = folderListPresenter.openFolderList(id);
 
         // フォルダリストを表示する
         RecyclerView folderRecyclerView = findViewById(R.id.folder_recycler_view);

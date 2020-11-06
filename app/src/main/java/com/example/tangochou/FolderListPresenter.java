@@ -19,19 +19,19 @@ public class FolderListPresenter {
 
     /**
      * フォルダの一覧を取得する
-     * @param directory
+     * @param parent_id
      * @return
      */
-    public ArrayList<FolderModel> openFolderList(String directory) {
+    public ArrayList<FolderModel> openFolderList(Integer parent_id) {
         ArrayList<FolderModel> folders = new ArrayList<FolderModel>();
         // DBアクセスのヘルパー
         DBOpenHelper helper;
         // DBからデータを取り出して格納
         helper = new DBOpenHelper(context);
         SQLiteDatabase db = helper.getReadableDatabase();
-        String selectionClause = "directory IS NULL";
-        if (directory != null) {
-            selectionClause = "directory = " + "'" + directory + "'";
+        String selectionClause = "parent_id IS NULL";
+        if (parent_id != null) {
+            selectionClause = "parent_id = " + "'" + parent_id + "'";
         }
         Cursor cursor = db.query("folder", new String[]{"id", "path", "name", "directory", "parent_id"}, selectionClause, null, null, null, null);
         cursor.moveToFirst();

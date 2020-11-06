@@ -47,6 +47,7 @@ public class InputFragment extends Fragment {
                 String directory = selectedFolder.getDirectory();
                 String originalName = selectedFolder.getName();
                 String newName = textBox.getText().toString();
+                Integer id = selectedFolder.getParentId();
                 // DBを更新
                 FolderListPresenter presenter = new FolderListPresenter(getContext());
                 presenter.updateFolderName(directory, originalName, newName);
@@ -55,8 +56,8 @@ public class InputFragment extends Fragment {
                         .beginTransaction()
                         .remove(fragment)
                         .commit();
-                //
-                ((FolderListActivity)getContext()).createView(directory);
+                // 画面に変更を反映
+                ((FolderListActivity)getContext()).createView(id);
 
                 // デバッグ
                 DBOpenHelper helper = new DBOpenHelper(getContext());

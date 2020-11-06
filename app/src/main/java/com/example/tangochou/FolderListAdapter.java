@@ -54,12 +54,12 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Vi
             public void onClick(View v) {
                 // クリックした場所のデータ取得
                 final int position = holder.getAdapterPosition();
-                String directory = dataset.get(position).getPath();
+                Integer folder_id = dataset.get(position).getId();
                 FolderListPresenter folderListPresenter = new FolderListPresenter(parent.getContext());
-                dataset = folderListPresenter.openFolderList(directory);
+                dataset = folderListPresenter.openFolderList(folder_id);
 
                 // クリックした場所のリスト表示を描画
-                ((FolderListActivity)context).createView(directory);
+                ((FolderListActivity)context).createView(folder_id);
                 Log.d("aaaaa", "dddddddd");
             }
 
