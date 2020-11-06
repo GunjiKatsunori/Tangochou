@@ -69,9 +69,18 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         // 並び順を更新
         holder.folderName.setText(dataset.get(position).getName());
+
+        // 長押しイベントのリスナー
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                ((FolderListActivity)context).createInputFragment("フォルダ名変更", "変更", dataset.get(position));
+                return true;
+            }
+        });
     }
 
     // アイテムの総数を返す

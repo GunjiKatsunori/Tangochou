@@ -1,5 +1,6 @@
 package com.example.tangochou;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -49,5 +50,30 @@ public class FolderListPresenter {
         cursor.close();
 
         return folders;
+    }
+
+    /**
+     * フォルダ名を更新する
+     * @param directory
+     * @param originalName
+     * @param newName
+     */
+    public void updateFolderName(String directory, String originalName, String newName) {
+        String originalPath = originalName;
+        String newPath = newName;
+        if (directory != null) {
+            originalPath = directory + "/" + originalName;
+            newPath = directory + "/" + newName;
+        }
+        // 更新データを用意する
+        ContentValues cv = new ContentValues();
+        cv.put("path", newPath);
+        cv.put("name", newName);
+        // DBにアクセスする
+        DBOpenHelper helper = new DBOpenHelper(context);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        String whereClause = "path = " + "'" + originalPath + "'";
+        Log.d("db", whereClause);
+        db.update("folder", cv, whereClause, null);
     }
 }
