@@ -18,16 +18,40 @@ public class FolderListPresenter {
     }
 
     /**
-     * フォルダの一覧を取得する
+     * idからフォルダを取得する
+     */
+    public FolderModel openFolder(Integer id) {
+        Log.d("id", String.valueOf(id));
+        // DBからデータを取り出して格納
+        DBOpenHelper helper= new DBOpenHelper(context);
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM folder WHERE id=?;", new String[] {String.valueOf(id)} );
+        FolderModel folder = null;
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            folder = new FolderModel(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getInt(4)
+
+            );
+        }
+
+        cursor.close();
+        return folder;
+    }
+
+    /**
+     * parent_idからフォルダの一覧を取得する
      * @param parent_id
      * @return
      */
     public ArrayList<FolderModel> openFolderList(Integer parent_id) {
         ArrayList<FolderModel> folders = new ArrayList<FolderModel>();
-        // DBアクセスのヘルパー
-        DBOpenHelper helper;
         // DBからデータを取り出して格納
-        helper = new DBOpenHelper(context);
+        DBOpenHelper helper= new DBOpenHelper(context);
         SQLiteDatabase db = helper.getReadableDatabase();
         String selectionClause = "parent_id IS NULL";
         if (parent_id != null) {
@@ -50,6 +74,28 @@ public class FolderListPresenter {
         cursor.close();
 
         return folders;
+    }
+
+    /**
+     * レコード追加
+     * @param directory
+     * @param name
+     * @param parent_id
+     */
+    public void addFolder(String directory, String name, Integer parent_id) {
+        DBOpenHelper helper= new DBOpenHelper(context);
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String path = name;
+        if (directory != null) {
+            path = directory + "/" + name;
+        }
+        String SQLInsert = "insert into folder(path, name, directory, parent_id) values(" +
+                "'" + path + "'" + ", " +
+                "'" + name + "'" + ", " +
+                "'" + directory + "'" + ", " +
+                "'" + parent_id + "'" +
+                ")";
+        db.execSQL(SQLInsert);
     }
 
     /**

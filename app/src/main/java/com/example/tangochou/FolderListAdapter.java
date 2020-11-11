@@ -1,8 +1,6 @@
 package com.example.tangochou;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.model.FolderModel;
@@ -60,7 +56,6 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Vi
 
                 // クリックした場所のリスト表示を描画
                 ((FolderListActivity)context).createView(folder_id);
-                Log.d("aaaaa", "dddddddd");
             }
 
         });
@@ -77,7 +72,8 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Vi
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                ((FolderListActivity)context).createInputFragment("フォルダ名変更", "変更", dataset.get(position));
+                InputFragment fragment = new FolderUpdateFragment(dataset.get(position).getId());
+                ((FolderListActivity)context).createInputFragment(fragment);
                 return true;
             }
         });
