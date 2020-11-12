@@ -2,6 +2,9 @@ package com.example.tangochou;
 
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
+
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +44,20 @@ public class FolderListActivity extends AppCompatActivity {
      */
     public void createView(Integer id) {
         this.id = id;
+        final Integer ID = id;
+
+        // ツールバーのアイコンなどの表示
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // 「戻る」ボタンクリック時のアクション
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FolderListPresenter presenter = new FolderListPresenter(getApplicationContext());
+                createView(presenter.getIdToBack(ID));
+            }
+        });
 
         // リスト表示のためのデータを呼び出す
         folderListPresenter = new FolderListPresenter(this);
@@ -55,13 +72,32 @@ public class FolderListActivity extends AppCompatActivity {
         folderRecyclerView.setAdapter(adapter);
 
         // 追加ボタンクリック時の動作
-        final Integer selectedId = id;
         FloatingActionButton fButton = findViewById(R.id.add_folder);
         fButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputFragment fragment = new FolderAddFragment(selectedId);
+                InputFragment fragment = new FolderAddFragment(ID);
                 createInputFragment(fragment);
+            }
+        });
+
+
+        //
+        findViewById(R.id.container).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int id = v.getId();
+
+                Log.d("touched", String.valueOf(id));
+                Log.d("container", String.valueOf(v.findViewById(R.id.container)));
+                //Log.d("tool bar", String.valueOf(v.findViewById(R.id.tool_bar)));
+                Log.d("folder_recycler_view", String.valueOf(v.findViewById(R.id.folder_recycler_view)));
+
+                switch(id) {
+                    case R.id.container:
+                        return true;
+                }
+                return false;
             }
         });
 

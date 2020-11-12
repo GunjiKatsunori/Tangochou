@@ -122,4 +122,13 @@ public class FolderListPresenter {
         Log.d("db", whereClause);
         db.update("folder", cv, whereClause, null);
     }
+
+    /**
+     * 戻るボタンの操作のためのidを取得
+     * @param id
+     * @return
+     */
+    public Integer getIdToBack(Integer id) {
+        return openFolder(id).getParentId();
+    }
 }
