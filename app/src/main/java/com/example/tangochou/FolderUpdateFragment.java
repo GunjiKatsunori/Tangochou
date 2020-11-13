@@ -23,7 +23,7 @@ public class FolderUpdateFragment extends InputFragment {
         EditText textBox = view.findViewById(R.id.input_box);
         String newName = textBox.getText().toString();
         FolderListPresenter presenter = new FolderListPresenter(getContext());
-        FolderModel selectedFolder = presenter.openFolder(selectedId);
+        FolderModel selectedFolder = (FolderModel) presenter.getFile("folder", selectedId);
         String directory = selectedFolder.getDirectory();
         String originalName = selectedFolder.getName();
         listViewId = selectedFolder.getParentId();
@@ -32,6 +32,11 @@ public class FolderUpdateFragment extends InputFragment {
 
     }
 
+
+    /**
+     * 一覧画面の再表示
+     * 更新データを反映させるため
+     */
     @Override
     public void reloadActivity() {
         ((FolderListActivity)getContext()).createView(listViewId);

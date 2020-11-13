@@ -4,6 +4,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * DBの定義やオープンを行う
+ * @author 郡司克徳
+ * @version 1.0.0
+ */
 public class DBOpenHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "tangochou.db";
@@ -54,7 +59,10 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    // DB作成時はSQL_CREATE_ENTRIESを実行
+    /**
+     * DBとテーブルを作成する
+     * @param db DB名
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TABLE_folder);
@@ -73,7 +81,13 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         // ダミーデータここまで
     }
 
-    // バージョン更新時の動作
+
+    /**
+     * バージョン更新時の動作
+     * @param db DB名
+     * @param oldVersion
+     * @param newVersion
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_ENTRIES + TABLE_NAME_FOLDER);
@@ -84,7 +98,13 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // バージョンダウングレード時の動作
+
+    /**
+     * バージョンダウングレード時の動作
+     * @param db DB名
+     * @param oldVersion
+     * @param newVersion
+     */
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, newVersion, oldVersion);

@@ -8,15 +8,32 @@ import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
+/**
+ * 選択フラグメントの画面制御
+ * このフラグメントでは新規作成対象がフォルダか学習セットかを選択する
+ * @author 郡司克徳
+ * @version 1.0.0
+ */
 public class SelectionFragment extends Fragment {
     View view;
     Fragment thisFragment = this;
     Integer selectedId;
 
+    /**
+     * コンストラクタ
+     * @param selectedId 新規追加先のフォルダのID
+     */
     public SelectionFragment(Integer selectedId) {
         this.selectedId = selectedId;
     }
 
+    /**
+     * 画面生成時の処理
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.selection_fragment, null);
@@ -31,7 +48,7 @@ public class SelectionFragment extends Fragment {
         selectionButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputFragment inputFragment = new FolderAddFragment(selectedId);
+                InputFragment inputFragment = new SeriesAddFragment(selectedId);
                 ((FolderListActivity)getContext()).createInputFragment(inputFragment);
 
                 // フラグメント表示終了
@@ -66,6 +83,10 @@ public class SelectionFragment extends Fragment {
         return view;
     }
 
+    /**
+     * 画面の再表示
+     * データ更新を反映するため
+     */
     public void reloadActivity() {
         ((FolderListActivity)getContext()).createView(selectedId);
     }

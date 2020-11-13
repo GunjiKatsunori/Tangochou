@@ -12,15 +12,23 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.model.FolderModel;
+import com.example.model.IFile;
 
 import java.util.ArrayList;
 
+/**
+ * リスト表示を制御する
+ * @author 郡司克徳
+ * @version 1.0.0
+ */
 public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<FolderModel> dataset;
+    private ArrayList<IFile> dataset;
     private AdapterView.OnItemClickListener listener;
 
-    // ホルダーの定義
+    /**
+     * 繰り返されたビューやその位置を制御するクラス
+     */
     static class ViewHolder extends RecyclerView.ViewHolder {
         ConstraintLayout linearLayout;
         TextView folderName;
@@ -32,12 +40,23 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Vi
         }
     }
 
-    // コンストラクター
-    FolderListAdapter(Context context, ArrayList<FolderModel> dataset) {
+
+    /**
+     * コンストラクタ
+     * @param context 表示元のActivity
+     * @param dataset 繰り返し表示されるデータ
+     */
+    FolderListAdapter(Context context, ArrayList<IFile> dataset) {
         this.context = context;
         this.dataset = dataset;
     }
 
+    /**
+     * リスト表示ビューを生成するときの処理
+     * @param parent
+     * @param ViewType
+     * @return
+     */
     @Override
     @NonNull
     public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int ViewType) {
@@ -52,7 +71,7 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Vi
                 final int position = holder.getAdapterPosition();
                 Integer folder_id = dataset.get(position).getId();
                 FolderListPresenter folderListPresenter = new FolderListPresenter(parent.getContext());
-                dataset = folderListPresenter.openFolderList(folder_id);
+                dataset = folderListPresenter.getFileList("folder", folder_id);
 
                 // クリックした場所のリスト表示を描画
                 ((FolderListActivity)context).createView(folder_id);
@@ -79,7 +98,9 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Vi
         });
     }
 
-    // アイテムの総数を返す
+    /**
+     * @return リスト表示対象の項目総数
+     */
     @Override
     public int getItemCount() {
         return dataset.size();

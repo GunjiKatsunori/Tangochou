@@ -12,6 +12,11 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+/**
+ * 編集・追加フラグメントの共通部分を実装したクラス
+ * @author 郡司克徳
+ * @version 1.0.0
+ */
 public class InputFragment extends Fragment{
     View view;
     String title;
@@ -32,6 +37,13 @@ public class InputFragment extends Fragment{
         this.selectedId = selectedId;
     }
 
+    /**
+     * 画面生成時の処理
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.input_fragment, null);
@@ -78,7 +90,14 @@ public class InputFragment extends Fragment{
         return view;
     }
 
+    /**
+     * テーブルへのデータ追加や更新
+     */
     public void updateTable(View view) {}
 
+    /**
+     * 一覧画面の再表示
+     * データ変更を反映させるため
+     */
     public void reloadActivity(){}
 }

@@ -13,16 +13,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.model.FolderModel;
+import com.example.model.IFile;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
 /**
- *
+ * フォルダー一覧表示画面(Activity)を制御する
+ * @author 郡司克徳
+ * @version 1.0.0
  */
 public class FolderListActivity extends AppCompatActivity {
     // 表示するデータのリスト
-    private static ArrayList<FolderModel> folders = new ArrayList<>();
+    private static ArrayList<IFile> folders = new ArrayList<>();
     // ディレクトリ
     private String directory;
     private Integer id=0;
@@ -30,6 +33,10 @@ public class FolderListActivity extends AppCompatActivity {
     FolderListAdapter adapter;
     FolderListPresenter folderListPresenter;
 
+    /**
+     * 一覧画面生成時の処理
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +68,7 @@ public class FolderListActivity extends AppCompatActivity {
 
         // リスト表示のためのデータを呼び出す
         folderListPresenter = new FolderListPresenter(this);
-        folders = folderListPresenter.openFolderList(id);
+        folders = folderListPresenter.getFileList("folder", id);
 
         // フォルダリストを表示する
         RecyclerView folderRecyclerView = findViewById(R.id.folder_recycler_view);
@@ -99,6 +106,10 @@ public class FolderListActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * 新規作成対象がフォルダか学習セットかを選択するフラグメントの表示
+     * @param fragment
+     */
     public void createSelectionFragment(SelectionFragment fragment) {
         // Activityにフラグメントを追加する
         FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
@@ -107,8 +118,8 @@ public class FolderListActivity extends AppCompatActivity {
     }
 
     /**
-     * 入力フラグメントの表示
-     * 追加と編集で共用
+     * 追加・編集フラグメントの表示
+     * @param fragment
      */
     public void createInputFragment(InputFragment fragment) {
         // Activityにフラグメントを追加する
