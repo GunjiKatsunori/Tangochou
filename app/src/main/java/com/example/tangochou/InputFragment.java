@@ -16,10 +16,12 @@ public class InputFragment extends Fragment{
     View view;
     String title;
     String actionName;
+    String cancellation = "キャンセル";
     Integer selectedId;
     final Fragment fragment = this;
 
     /**
+     * コンストラクター
      * @param title
      * @param actionName
      * @param selectedId
@@ -37,12 +39,14 @@ public class InputFragment extends Fragment{
         // 表示の編集
         TextView textView = view.findViewById(R.id.input_text_view);
         textView.setText(title);
-        Button button = view.findViewById(R.id.input_button);
-        button.setText(actionName);
+        Button cancelButton = view.findViewById(R.id.cancel_button);
+        cancelButton.setText(cancellation);
+        Button inputButton = view.findViewById(R.id.input_button);
+        inputButton.setText(actionName);
         EditText textBox = view.findViewById(R.id.input_box);
 
-        // ボタンのクリックリスナー
-        button.setOnClickListener(new View.OnClickListener() {
+        // input button のクリックリスナー
+        inputButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // DB更新
@@ -56,6 +60,18 @@ public class InputFragment extends Fragment{
 
                 // 画面に変更を反映
                 reloadActivity();
+            }
+        });
+
+        // cancel button のクリックリスナー
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // フラグメント表示終了
+                getFragmentManager()
+                        .beginTransaction()
+                        .remove(fragment)
+                        .commit();
             }
         });
 

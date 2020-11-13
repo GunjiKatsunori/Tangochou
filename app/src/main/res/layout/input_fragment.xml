@@ -24,14 +24,22 @@
         tools:layout_editor_absoluteY="57dp">
 
     </EditText>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""/>
 
-    <Button
-        android:id="@+id/input_button"
-        android:layout_width="89dp"
-        android:layout_height="36dp"
-        android:text=""
-        tools:layout_editor_absoluteX="79dp"
-        tools:layout_editor_absoluteY="121dp"
-        android:gravity="center_horizontal"/>
+        <Button
+            android:id="@+id/input_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""/>
+    </LinearLayout>
 
 </LinearLayout>

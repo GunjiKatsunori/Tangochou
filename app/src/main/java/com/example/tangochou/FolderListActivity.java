@@ -71,36 +71,39 @@ public class FolderListActivity extends AppCompatActivity {
         adapter = new FolderListAdapter(this, folders);
         folderRecyclerView.setAdapter(adapter);
 
-        // 追加ボタンクリック時の動作
+        // フロートボタンクリック時
+        // 追加項目を選択するフラグメントを表示
         FloatingActionButton fButton = findViewById(R.id.add_folder);
         fButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputFragment fragment = new FolderAddFragment(ID);
-                createInputFragment(fragment);
+                SelectionFragment fragment = new SelectionFragment(ID);
+                createSelectionFragment(fragment);
             }
         });
 
 
         //
-        findViewById(R.id.container).setOnTouchListener(new View.OnTouchListener() {
+        findViewById(R.id.input_container).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 int id = v.getId();
 
-                Log.d("touched", String.valueOf(id));
-                Log.d("container", String.valueOf(v.findViewById(R.id.container)));
-                //Log.d("tool bar", String.valueOf(v.findViewById(R.id.tool_bar)));
-                Log.d("folder_recycler_view", String.valueOf(v.findViewById(R.id.folder_recycler_view)));
-
                 switch(id) {
-                    case R.id.container:
+                    case R.id.input_container:
                         return true;
                 }
                 return false;
             }
         });
 
+    }
+
+    public void createSelectionFragment(SelectionFragment fragment) {
+        // Activityにフラグメントを追加する
+        FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
+        tr.add(R.id.selection_container, fragment);
+        tr.commit();
     }
 
     /**
@@ -110,12 +113,7 @@ public class FolderListActivity extends AppCompatActivity {
     public void createInputFragment(InputFragment fragment) {
         // Activityにフラグメントを追加する
         FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
-        tr.add(R.id.container, fragment);
+        tr.add(R.id.input_container, fragment);
         tr.commit();
     }
-
-    // add_folderをクリックすると追加用のInputFragmentを表示
-    // add_folderのクリックリスナ
-    // InputFragmentの「追加」を表示するためのパラメータ
-    // InputFragmentを呼び出す
 }
