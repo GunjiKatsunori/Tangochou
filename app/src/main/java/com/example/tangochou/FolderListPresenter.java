@@ -101,7 +101,7 @@ public class FolderListPresenter {
         if (parent_id != null) {
             selectionClause = "parent_id = " + "'" + parent_id + "'";
         }
-        Cursor cursor = db.query("folder", new String[]{"id", "path", "name", "directory", "parent_id"}, selectionClause, null, null, null, null);
+        Cursor cursor = db.query(table, new String[]{"id", "path", "name", "directory", "parent_id"}, selectionClause, null, null, null, null);
         cursor.moveToFirst();
 
         // 戻り値を生成

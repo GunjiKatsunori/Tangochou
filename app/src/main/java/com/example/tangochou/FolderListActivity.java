@@ -66,17 +66,8 @@ public class FolderListActivity extends AppCompatActivity {
             }
         });
 
-        // リスト表示のためのデータを呼び出す
-        folderListPresenter = new FolderListPresenter(this);
-        folders = folderListPresenter.getFileList("folder", id);
-
-        // フォルダリストを表示する
-        RecyclerView folderRecyclerView = findViewById(R.id.folder_recycler_view);
-        folderRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        folderRecyclerView.setLayoutManager(layoutManager);
-        adapter = new FolderListAdapter(this, folders);
-        folderRecyclerView.setAdapter(adapter);
+        // Folderのリスト表示
+        createList("folder", "series");
 
         // フロートボタンクリック時
         // 追加項目を選択するフラグメントを表示
@@ -104,6 +95,28 @@ public class FolderListActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    /**
+     *
+     * @param tables
+     */
+    public void createList(String... tables) {
+        ArrayList<IFile> files = new ArrayList<>();
+
+        // リスト表示のためのデータを呼び出す
+        folderListPresenter = new FolderListPresenter(this);
+        for (String table : tables) {
+            files.addAll(folderListPresenter.getFileList(table, id));
+        }
+
+        // フォルダリストを表示する
+        RecyclerView folderRecyclerView = findViewById(R.id.folder_recycler_view);
+        folderRecyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        folderRecyclerView.setLayoutManager(layoutManager);
+        adapter = new FolderListAdapter(this, files);
+        folderRecyclerView.setAdapter(adapter);
     }
 
     /**

@@ -63,7 +63,7 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Vi
         View view = LayoutInflater.from(context).inflate(R.layout.folder_item, parent, false);
         final ViewHolder holder = new ViewHolder(view);
 
-        // クリックイベントのリスナー
+        // 項目をクリックしたときに、その下の階層に属するものを一覧表示する
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,11 +73,13 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Vi
                 FolderListPresenter folderListPresenter = new FolderListPresenter(parent.getContext());
                 dataset = folderListPresenter.getFileList("folder", folder_id);
 
-                // クリックした場所のリスト表示を描画
+                // クリックした場所のリスト表示
                 ((FolderListActivity)context).createView(folder_id);
             }
 
         });
+
+        // 学習セットの場合はボタンをクリックしたときに、カードの個別表示を行うようにする
 
         return holder;
     }
