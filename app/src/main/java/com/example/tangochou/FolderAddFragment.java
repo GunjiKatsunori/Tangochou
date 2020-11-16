@@ -35,7 +35,7 @@ public class FolderAddFragment extends InputFragment {
             directory = selectedFolder.getPath();
         }
         // DBに登録
-        presenter.addFolder(directory, newName, selectedId);
+        presenter.addFile("folder", directory, newName, selectedId);
     }
 
     /**

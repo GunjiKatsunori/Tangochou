@@ -91,7 +91,8 @@ public class InputFragment extends Fragment{
     }
 
     /**
-     * テーブルへのデータ追加や更新
+     * テーブルへのデータ追加もしくは更新
+     * @param view
      */
     public void updateTable(View view) {}
 

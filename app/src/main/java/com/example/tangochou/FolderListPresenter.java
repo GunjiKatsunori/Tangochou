@@ -141,12 +141,12 @@ public class FolderListPresenter {
     }
 
     /**
-     * フォルダレコードを追加
+     * folderテーブルもしくはseriesテーブルへのDB登録
      * @param directory
      * @param name
      * @param parent_id
      */
-    public void addFolder(String directory, String name, Integer parent_id) {
+    public void addFile(String table, String directory, String name, Integer parent_id) {
         // DBにデータを登録する
         DBOpenHelper helper= new DBOpenHelper(context);
         SQLiteDatabase db = helper.getReadableDatabase();
@@ -154,12 +154,25 @@ public class FolderListPresenter {
         if (directory != null) {
             path = directory + "/" + name;
         }
-        String SQLInsert = "insert into folder(path, name, directory, parent_id) values(" +
-                "'" + path + "'" + ", " +
-                "'" + name + "'" + ", " +
-                "'" + directory + "'" + ", " +
-                "'" + parent_id + "'" +
-                ")";
+
+        String SQLInsert = null;
+        if (table.equals("folder")) {
+            SQLInsert = "insert into folder(path, name, directory, parent_id) values(" +
+                    "'" + path + "'" + ", " +
+                    "'" + name + "'" + ", " +
+                    "'" + directory + "'" + ", " +
+                    "'" + parent_id + "'" +
+                    ")";
+
+        }else if (table.equals("series")) {
+            SQLInsert = "insert into series(path, name, directory, parent_id) values(" +
+                    "'" + path + "'" + ", " +
+                    "'" + name + "'" + ", " +
+                    "'" + directory + "'" + ", " +
+                    "'" + parent_id + "'" +
+                    ")";
+
+        }
         db.execSQL(SQLInsert);
     }
 
