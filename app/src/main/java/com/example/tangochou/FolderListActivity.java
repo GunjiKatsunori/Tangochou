@@ -26,8 +26,15 @@ import java.util.ArrayList;
 public class FolderListActivity extends AppCompatActivity {
     // 表示するデータのリスト
     private static ArrayList<IFile> folders = new ArrayList<>();
-    // ディレクトリ
-    private String directory;
+
+    /**
+     * 現在のディレクトリがフォルダ内か学習セット内かをあらわす
+     */
+    private String directoryEnv;
+
+    /**
+     * ディレクトリのid
+     */
     private Integer id=0;
 
     FolderListAdapter adapter;
@@ -80,21 +87,6 @@ public class FolderListActivity extends AppCompatActivity {
             }
         });
 
-
-        //
-        findViewById(R.id.input_container).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int id = v.getId();
-
-                switch(id) {
-                    case R.id.input_container:
-                        return true;
-                }
-                return false;
-            }
-        });
-
     }
 
     /**
@@ -137,7 +129,7 @@ public class FolderListActivity extends AppCompatActivity {
     public void createInputFragment(InputFragment fragment) {
         // Activityにフラグメントを追加する
         FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
-        tr.add(R.id.input_container, fragment);
+        tr.add(R.id.folder_list, fragment);
         tr.commit();
     }
 }

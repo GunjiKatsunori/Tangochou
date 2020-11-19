@@ -178,27 +178,37 @@ public class FolderListPresenter {
 
     /**
      * フォルダ名を更新する
-     * @param directory
-     * @param originalName
+     * @param file
      * @param newName
      */
-    public void updateFolderName(String directory, String originalName, String newName) {
-        String originalPath = originalName;
+    public void updateFileName(IFile file, String newName) {
+        // 更新対象のpath, directoryなど
+        String directory = file.getDirectory();
+        String originalPath = file.getName();
         String newPath = newName;
         if (directory != null) {
-            originalPath = directory + "/" + originalName;
+            originalPath = directory + "/" + file.getName();
             newPath = directory + "/" + newName;
         }
-        // 更新データを用意する
+
+        // 更新データをcontentValueとして用意する
         ContentValues cv = new ContentValues();
         cv.put("path", newPath);
         cv.put("name", newName);
-        // DBにアクセスする
+
+        // テーブル名指定
+        String table = null;
+        if (file instanceof FolderModel) {
+            table = "folder";
+        }else if (file instanceof SeriesModel) {
+            table = "series";
+        }
+
+        // DB更新処理
         DBOpenHelper helper = new DBOpenHelper(context);
         SQLiteDatabase db = helper.getWritableDatabase();
         String whereClause = "path = " + "'" + originalPath + "'";
-        Log.d("db", whereClause);
-        db.update("folder", cv, whereClause, null);
+        db.update(table, cv, whereClause, null);
     }
 
     /**

@@ -1,12 +1,15 @@
 package com.example.tangochou;
 
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.model.FolderModel;
+import com.example.model.SeriesModel;
 
-public class FolderUpdateFragment extends InputFragment {
+/**
+ * 学習セット名変更のためのフラグメントを制御する
+ */
+public class SeriesUpdateFragment extends InputFragment {
     /**
      * 所属フォルダのID
      */
@@ -14,27 +17,27 @@ public class FolderUpdateFragment extends InputFragment {
 
     /**
      * コンストラクター
-     * @param selectedId
+     * @param selectedId 変更対象の学習セットのID
      */
-    FolderUpdateFragment(Integer selectedId) {
-        super("フォルダ名変更", "変更", selectedId);
+    SeriesUpdateFragment(Integer selectedId) {
+        super("学習セット名変更", "変更", selectedId);
     }
 
     /**
-     * フォルダ名の変更をDBに反映させる処理
+     * 学習セット名の変更をDBに反映させる処理
      * @param view
      */
     @Override
     public void updateTable(View view) {
-        // idの対応するフォルダのデータを取得
+        // 新しい学習セット名を取得
         EditText textBox = view.findViewById(R.id.input_box);
         String newName = textBox.getText().toString();
+        // 変更対象の学習セットのレコードを取得
         FolderListPresenter presenter = new FolderListPresenter(getContext());
-        FolderModel selectedFolder = (FolderModel) presenter.getFile("folder", selectedId);
-        parentId = selectedFolder.getParentId();
+        SeriesModel selectedSeries = (SeriesModel) presenter.getFile("series", selectedId);
+        parentId = selectedSeries.getParentId();
         // DBを更新
-        presenter.updateFileName(selectedFolder, newName);
-
+        presenter.updateFileName(selectedSeries, newName);
     }
 
 
@@ -46,5 +49,4 @@ public class FolderUpdateFragment extends InputFragment {
     public void reloadActivity() {
         ((FolderListActivity)getContext()).createView(parentId);
     }
-
 }

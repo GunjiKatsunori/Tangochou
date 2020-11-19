@@ -5,14 +5,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.model.CardModel;
 import com.example.model.FolderModel;
 import com.example.model.IFile;
+import com.example.model.SeriesModel;
 
 import java.util.ArrayList;
 
@@ -36,7 +39,7 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Vi
         ViewHolder(View v) {
             super(v);
             linearLayout = v.findViewById(R.id.folder_list);
-            folderName = v.findViewById(R.id.folder_name);
+            folderName = v.findViewById(R.id.item_name);
         }
     }
 
@@ -67,19 +70,49 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Vi
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // クリックした場所のデータ取得
-                final int position = holder.getAdapterPosition();
-                Integer folder_id = dataset.get(position).getId();
-                FolderListPresenter folderListPresenter = new FolderListPresenter(parent.getContext());
-                dataset = folderListPresenter.getFileList("folder", folder_id);
-
-                // クリックした場所のリスト表示
-                ((FolderListActivity)context).createView(folder_id);
+                showLowerDirectory(v, holder);
             }
-
         });
 
-        // 学習セットの場合はボタンをクリックしたときに、カードの個別表示を行うようにする
+        // リストの名前表示部分をクリックしたとき
+        TextView item_name = view.findViewById(R.id.item_name);
+        item_name.setClickable(true);
+        item_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("itemname CLICKED");
+                final int position = holder.getAdapterPosition();
+                if (dataset.get(position) instanceof FolderModel) {
+                    // フォルダの場合は下の階層を表示
+                    showLowerDirectory(v, holder);
+                }else if (dataset.get(position) instanceof SeriesModel) {
+                    // 学習セットの場合はカードの個別表示
+                    showCards(v, holder);
+                }else if (dataset.get(position) instanceof CardModel) {
+                    // カードの場合は編集画面
+                }
+            }
+        });
+
+        // リストの左端部分をクリックしたとき
+        TextView itemLeftSide = view.findViewById(R.id.item_left_side);
+        itemLeftSide.setClickable(true);
+        itemLeftSide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("left side CLICKED");
+                final int position = holder.getAdapterPosition();
+                if (dataset.get(position) instanceof FolderModel) {
+                    // フォルダの場合は下の階層を表示
+                    showLowerDirectory(v, holder);
+                }else if (dataset.get(position) instanceof SeriesModel) {
+                    // 学習セットの場合はカードの個別表示
+                    showCards(v, holder);
+                }else if (dataset.get(position) instanceof CardModel) {
+                    // カードの場合は編集画面
+                }
+            }
+        });
 
         return holder;
     }
@@ -90,10 +123,19 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Vi
         holder.folderName.setText(dataset.get(position).getName());
 
         // 長押しイベントのリスナー
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.folderName.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                InputFragment fragment = new FolderUpdateFragment(dataset.get(position).getId());
+                InputFragment fragment = null;
+                if (dataset.get(position) instanceof FolderModel) {
+                    // フォルダーを長押ししたとき、フォルダ編集フラグメントを表示
+                    fragment = new FolderUpdateFragment(dataset.get(position).getId());
+                }else if (dataset.get(position) instanceof SeriesModel) {
+                    // 学習セットを長押ししたとき、学習セット編集フラグメントを表示
+                    fragment = new SeriesUpdateFragment(dataset.get(position).getId());
+                }else if (dataset.get(position) instanceof CardModel) {
+
+                }
                 ((FolderListActivity)context).createInputFragment(fragment);
                 return true;
             }
@@ -106,5 +148,26 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Vi
     @Override
     public int getItemCount() {
         return dataset.size();
+    }
+
+    /**
+     * クリックした項目の下の階層に属するものを一覧表示する
+     * @param v
+     * @param holder
+     */
+    public void showLowerDirectory(View v, ViewHolder holder) {
+        // クリックした場所のデータ取得
+        final int position = holder.getAdapterPosition();
+        Integer folder_id = dataset.get(position).getId();
+        //FolderListPresenter folderListPresenter = new FolderListPresenter((FolderListActivity)context);
+        //dataset = folderListPresenter.getFileList("folder", folder_id);
+
+        // クリックした場所のリスト表示
+        ((FolderListActivity)context).createView(folder_id);
+
+    }
+
+    public void showCards(View v, ViewHolder holder) {
+
     }
 }
