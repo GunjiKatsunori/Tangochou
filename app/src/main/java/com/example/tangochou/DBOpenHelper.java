@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * @version 1.0.0
  */
 public class DBOpenHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "tangochou.db";
     // テーブル名
     public static final String TABLE_NAME_FOLDER = "folder";
@@ -44,13 +44,14 @@ public class DBOpenHelper extends SQLiteOpenHelper {
             "timestamp VARCHAR(19) NOT NULL, " +
             "card_id VARCHAR(100) NOT NULL, " +
             "hist_series_id VARCHAR(100) NOT NULL, " +
-            "correct INTEGER NOT NULL DEFAULT 0 check(correct = 0 or correct = 1)" +
+            "correct INTEGER NOT NULL DEFAULT 0 check(correct = -1 or correct = 1)" +
             ")";
     private static String SQL_CREATE_TABLE_hist_series = "CREATE TABLE " + TABLE_NAME_HISTORY_SERIES + " (" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "timestamp VARCHAR(19) NOT NULL, " +
             "series_id INTEGER NOT NULL, " +
-            "rate real NOT NULL DEFAULT 0" +
+            "correct INTEGER DEFAULT 0, " +
+            "incorrect INTEGER DEFAULT 0" +
             ")";
     // テーブル削除
     private static String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS ";
@@ -74,9 +75,13 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         // ダミーデータを挿入
         String SQL_DUMMY = "insert into folder(path, name, parent_id) values('nameAAA', 'nameAAA', 0), ('nameBBB', 'nameBBB', 0), ('nameCCC', 'nameCCC', 0), ('nameDDD', 'nameDDD', 0)";
         String SQL_DUMMY2 = "insert into folder(path, name, directory, parent_id) values('nameAAA/aaa', 'aaa', 'nameAAA', 1), ('nameAAA/bbb', 'bbb', 'nameAAA', 1)";
+        String SQL_DUMMY3 = "insert into series(path, name, directory, parent_id) values('nameAAA/aaa/series1', 'series1', 'nameAAA/aaa', 1), ('nameAAA/aaa/series2', 'series2', 'nameAAA/aaa', 1)";
+        String SQL_DUMMY4 = "insert into card(head, tail, directory, parent_id) values('text text1', 'text text2', 'nameAAA/aaa/series1', 1), ('text text2', 'text text3', 'nameAAA/aaa/series1', 1)";
 
         db.execSQL(SQL_DUMMY);
         db.execSQL(SQL_DUMMY2);
+        db.execSQL(SQL_DUMMY3);
+        db.execSQL(SQL_DUMMY4);
 
         // ダミーデータここまで
     }

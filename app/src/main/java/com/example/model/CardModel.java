@@ -39,7 +39,7 @@ public class CardModel implements IFile {
 
     /**
      * Cardの表面のテキストを取得する
-     * @return ID
+     * @return
      */
     public String getHead() {
         return head;
@@ -50,7 +50,7 @@ public class CardModel implements IFile {
 
     /**
      * Cardの裏面のテキストを取得する
-     * @return ID
+     * @return
      */
     public String getTail() {
         return tail;

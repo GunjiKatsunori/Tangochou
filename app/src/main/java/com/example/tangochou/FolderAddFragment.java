@@ -23,6 +23,10 @@ public class FolderAddFragment extends InputFragment {
         super("新規フォルダ作成", "追加", selectedId);
     }
 
+    /**
+     *
+     * @param view
+     */
     @Override
     public void updateTable(View view) {
         // idに対応するフォルダのデータを取得
@@ -35,7 +39,8 @@ public class FolderAddFragment extends InputFragment {
             directory = selectedFolder.getPath();
         }
         // DBに登録
-        presenter.addFile("folder", directory, newName, selectedId);
+        FolderModel folder = new FolderModel(null, null, newName, directory, selectedId);
+        presenter.addFile(folder);
     }
 
     /**

@@ -101,12 +101,14 @@ public class FolderListPresenter {
         if (parent_id != null) {
             selectionClause = "parent_id = " + "'" + parent_id + "'";
         }
-        Cursor cursor = db.query(table, new String[]{"id", "path", "name", "directory", "parent_id"}, selectionClause, null, null, null, null);
-        cursor.moveToFirst();
+        Cursor cursor = null;
 
         // 戻り値を生成
         ArrayList<IFile> fileList = new ArrayList<IFile>();
         if(table.equals("folder")) {
+            cursor = db.query(table, new String[]{"id", "path", "name", "directory", "parent_id"}, selectionClause, null, null, null, null);
+            cursor.moveToFirst();
+
             for (int i = 0; i < cursor.getCount(); i++) {
                 FolderModel folder = new FolderModel(
                         cursor.getInt(0),
@@ -120,6 +122,9 @@ public class FolderListPresenter {
             }
         }
         else if(table.equals("series")) {
+            cursor = db.query(table, new String[]{"id", "path", "name", "directory", "parent_id"}, selectionClause, null, null, null, null);
+            cursor.moveToFirst();
+
             for (int i = 0; i < cursor.getCount(); i++) {
                 SeriesModel series = new SeriesModel(
                         cursor.getInt(0),
@@ -133,7 +138,20 @@ public class FolderListPresenter {
             }
         }
         else if(table.equals("card")) {
+            cursor = db.query(table, new String[]{"id", "head", "tail", "directory", "parent_id"}, selectionClause, null, null, null, null);
+            cursor.moveToFirst();
 
+            for (int i = 0; i < cursor.getCount(); i++) {
+                CardModel series = new CardModel(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getInt(4)
+                );
+                fileList.add(series);
+                cursor.moveToNext();
+            }
         }
         cursor.close();
 
@@ -142,21 +160,23 @@ public class FolderListPresenter {
 
     /**
      * folderテーブルもしくはseriesテーブルへのDB登録
-     * @param directory
-     * @param name
-     * @param parent_id
+     * @param file
      */
-    public void addFile(String table, String directory, String name, Integer parent_id) {
+    public void addFile(IFile file) {
         // DBにデータを登録する
         DBOpenHelper helper= new DBOpenHelper(context);
         SQLiteDatabase db = helper.getReadableDatabase();
-        String path = name;
-        if (directory != null) {
-            path = directory + "/" + name;
-        }
 
         String SQLInsert = null;
-        if (table.equals("folder")) {
+        String directory = file.getDirectory();
+        Integer parent_id = file.getParentId();
+        if (file instanceof FolderModel) {
+            String name = file.getName();
+            String path = file.getName();
+            if (directory != null) {
+                path = directory + "/" + file.getName();
+            }
+
             SQLInsert = "insert into folder(path, name, directory, parent_id) values(" +
                     "'" + path + "'" + ", " +
                     "'" + name + "'" + ", " +
@@ -164,7 +184,13 @@ public class FolderListPresenter {
                     "'" + parent_id + "'" +
                     ")";
 
-        }else if (table.equals("series")) {
+        }else if (file instanceof SeriesModel) {
+            String name = file.getName();
+            String path = file.getName();
+            if (directory != null) {
+                path = directory + "/" + file.getName();
+            }
+
             SQLInsert = "insert into series(path, name, directory, parent_id) values(" +
                     "'" + path + "'" + ", " +
                     "'" + name + "'" + ", " +
@@ -172,7 +198,19 @@ public class FolderListPresenter {
                     "'" + parent_id + "'" +
                     ")";
 
+        }else if (file instanceof CardModel) {
+            CardModel card = (CardModel)file;
+            String head = card.getHead();
+            String tail = card.getTail();
+
+            SQLInsert = "insert into card(head, tail, directory, parent_id) values(" +
+                    "'" + head + "'" + ", " +
+                    "'" + tail + "'" + ", " +
+                    "'" + directory + "'" + ", " +
+                    "'" + parent_id + "'" +
+                    ")";
         }
+
         db.execSQL(SQLInsert);
     }
 

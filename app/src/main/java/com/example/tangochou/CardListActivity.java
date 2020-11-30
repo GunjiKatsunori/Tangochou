@@ -1,12 +1,12 @@
 package com.example.tangochou;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.widget.Toolbar;
-
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,22 +17,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 /**
- * フォルダー一覧表示画面(Activity)を制御する
+ * カード一覧表示画面(Activity)を制御する
  * @author 郡司克徳
  * @version 1.0.0
  */
-public class FolderListActivity extends AppCompatActivity {
+public class CardListActivity extends AppCompatActivity {
     /**
-     * 現在のディレクトリがフォルダ内か学習セット内かをあらわす
+     * 学習セットのID
      */
-    private String directoryEnv;
+    private Integer id;
 
-    /**
-     * ディレクトリのid
-     */
-    private Integer id=0;
-
-    FolderListAdapter adapter;
+    CardListAdapter adapter;
     FolderListPresenter folderListPresenter;
 
     /**
@@ -44,11 +39,15 @@ public class FolderListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.folder_list);
 
+        // FolderListActivity から intent を受け取る
+        Intent intent = getIntent();
+        id = intent.getIntExtra("series_id", 0);
+
         createView(id);
     }
 
     /**
-     * 与えられたdirectory以下のデータ一覧を取得して表示
+     * idで指定した学習セット内のカード一覧を表示
      * @param id
      */
     public void createView(Integer id) {
@@ -59,18 +58,17 @@ public class FolderListActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        // 「戻る」ボタンクリック時のアクション
-        // IDからディレクトリを検索し、一覧表示画面を再描画
+        // 「戻る」ボタンクリック時に CardListActivity を終了させる
+        final CardListActivity activity = this;
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FolderListPresenter presenter = new FolderListPresenter(getApplicationContext());
-                createView(presenter.getIdToBack(ID));
+                activity.finish();
             }
         });
 
         // Folderのリスト表示
-        createList("folder", "series");
+        createList();
 
         // フロートボタンクリック時
         // 追加項目を選択するフラグメントを表示
@@ -78,74 +76,36 @@ public class FolderListActivity extends AppCompatActivity {
         fButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SelectionFragment fragment = new SelectionFragment(ID);
-                createSelectionFragment(fragment);
+                CardInputFragment fragment = new CardAddFragment(ID);
+                createCardInputFragment(fragment);
             }
         });
-
     }
 
-    /**
-     *
-     * @param tables
-     */
-    public void createList(String... tables) {
-        ArrayList<IFile> files = new ArrayList<>();
+    public void createList() {
+        ArrayList<IFile> files;
 
         // リスト表示のためのデータを呼び出す
         folderListPresenter = new FolderListPresenter(this);
-        for (String table : tables) {
-            files.addAll(folderListPresenter.getFileList(table, id));
-        }
+        files = folderListPresenter.getFileList("card", id);
 
         // フォルダリストを表示する
         RecyclerView folderRecyclerView = findViewById(R.id.folder_recycler_view);
         folderRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         folderRecyclerView.setLayoutManager(layoutManager);
-        adapter = new FolderListAdapter(this, files);
+        adapter = new CardListAdapter(this, files);
         folderRecyclerView.setAdapter(adapter);
     }
 
     /**
-     * 新規作成対象がフォルダか学習セットかを選択するフラグメントの表示
+     * カード追加・編集フラグメントの表示処理
      * @param fragment
      */
-    public void createSelectionFragment(SelectionFragment fragment) {
-        // Activityにフラグメントを追加する
-        FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
-        tr.add(R.id.selection_container, fragment);
-        tr.commit();
-    }
-
-    /**
-     * 追加・編集フラグメントの表示
-     * @param fragment
-     */
-    public void createInputFragment(InputFragment fragment) {
+    public void createCardInputFragment(CardInputFragment fragment) {
         // Activityにフラグメントを追加する
         FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
         tr.add(R.id.folder_list, fragment);
         tr.commit();
-    }
-
-    /**
-     * CardListActivity に画面遷移する
-     * @param series_id
-     */
-    public void startCardListActivity(Integer series_id) {
-        Intent intent = new Intent(this.getApplicationContext(), CardListActivity.class);
-        intent.putExtra("series_id", series_id);
-        startActivity(intent);
-    }
-
-    /**
-     * CardActivity に画面遷移する
-     * @param series_id
-     */
-    public void startCardActivity(Integer series_id) {
-        Intent intent = new Intent(this.getApplicationContext(), CardActivity.class);
-        intent.putExtra("series_id", series_id);
-        startActivity(intent);
     }
 }

@@ -11,6 +11,7 @@ import android.widget.EditText;
 import androidx.fragment.app.Fragment;
 
 import com.example.model.FolderModel;
+import com.example.model.SeriesModel;
 
 /**
  * 学習セット追加フラグメントを実装したクラス
@@ -44,7 +45,8 @@ public class SeriesAddFragment extends InputFragment {
             directory = selectedFolder.getPath();
         }
         // 新規学習セットのDB登録
-        presenter.addFile("series", directory, newName, selectedId);
+        SeriesModel series = new SeriesModel(null, null, newName, directory, selectedId);
+        presenter.addFile(series);
     }
 
     /**
