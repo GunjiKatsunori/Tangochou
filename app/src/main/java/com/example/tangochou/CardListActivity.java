@@ -36,6 +36,13 @@ public class CardListActivity extends AppCompatActivity {
     RecyclerView folderRecyclerView;
 
     /**
+     * 追加・編集フラグメントが表示されているかを表すフラグ
+     * 両面表示されている: true
+     * されていない     : false
+     */
+    Boolean inputFlag = false;
+
+    /**
      * 一覧画面生成時の処理
      * @param savedInstanceState
      */
@@ -109,10 +116,16 @@ public class CardListActivity extends AppCompatActivity {
      * @param fragment
      */
     public void createCardInputFragment(CardInputFragment fragment) {
-        // Activityにフラグメントを追加する
-        FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
-        tr.add(R.id.folder_list, fragment);
-        tr.commit();
+        // 両面表示されていないときだけ両面表示処理を実行する
+        if (!inputFlag) {
+            // フラグをtrueにする
+            inputFlag = true;
+
+            // Activityにフラグメントを追加する
+            FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
+            tr.add(R.id.folder_list, fragment);
+            tr.commit();
+        }
     }
 
     /**

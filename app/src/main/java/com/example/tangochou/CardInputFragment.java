@@ -79,17 +79,14 @@ public class CardInputFragment extends Fragment {
         inputButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // DB更新
-                updateTable(view);
+            // DB更新
+            updateTable(view);
 
-                // フラグメント表示終了
-                getFragmentManager()
-                        .beginTransaction()
-                        .remove(fragment)
-                        .commit();
+            // フラグメント表示終了
+            closeFragment();
 
-                // 画面に変更を反映
-                reloadActivity();
+            // 画面に変更を反映
+            reloadActivity();
             }
         });
 
@@ -97,11 +94,8 @@ public class CardInputFragment extends Fragment {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // フラグメント表示終了
-                getFragmentManager()
-                        .beginTransaction()
-                        .remove(fragment)
-                        .commit();
+            // フラグメント表示終了
+            closeFragment();
             }
         });
 
@@ -116,6 +110,19 @@ public class CardInputFragment extends Fragment {
         System.out.println("update table");
     }
 
+    /**
+     * フラグメント終了処理
+     */
+    public void closeFragment() {
+        // フラグメント表示終了
+        getFragmentManager()
+                .beginTransaction()
+                .remove(fragment)
+                .commit();
+
+        // フラグを戻す
+        ((CardListActivity)getActivity()).inputFlag = false;
+    }
 
     /**
      * 一覧画面の再表示

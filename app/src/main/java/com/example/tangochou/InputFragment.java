@@ -61,17 +61,14 @@ public class InputFragment extends Fragment{
         inputButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // DB更新
-                updateTable(view);
+            // DB更新
+            updateTable(view);
 
-                // フラグメント表示終了
-                getFragmentManager()
-                        .beginTransaction()
-                        .remove(fragment)
-                        .commit();
+            // フラグメント表示終了
+            closeFragment();
 
-                // 画面に変更を反映
-                reloadActivity();
+            // 画面に変更を反映
+            reloadActivity();
             }
         });
 
@@ -79,11 +76,8 @@ public class InputFragment extends Fragment{
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // フラグメント表示終了
-                getFragmentManager()
-                        .beginTransaction()
-                        .remove(fragment)
-                        .commit();
+            // フラグメント表示終了
+            closeFragment();
             }
         });
 
@@ -95,6 +89,21 @@ public class InputFragment extends Fragment{
      * @param view
      */
     public void updateTable(View view) {}
+
+    /**
+     * フラグメント終了処理
+     */
+    public void closeFragment() {
+        // フラグメント表示終了
+        getFragmentManager()
+                .beginTransaction()
+                .remove(fragment)
+                .commit();
+
+        // フラグを戻す
+        ((FolderListActivity)getActivity()).inputFlag = false;
+        ((FolderListActivity)getActivity()).selectionFlag = false;
+    }
 
     /**
      * 一覧画面の再表示

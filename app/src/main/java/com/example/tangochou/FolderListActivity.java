@@ -36,6 +36,20 @@ public class FolderListActivity extends AppCompatActivity {
     FolderListPresenter folderListPresenter;
 
     /**
+     * 選択フラグメントが表示されているかを表すフラグ
+     * 両面表示されている: true
+     * されていない     : false
+     */
+    Boolean selectionFlag = false;
+
+    /**
+     * 追加・編集フラグメントが表示されているかを表すフラグ
+     * 両面表示されている: true
+     * されていない     : false
+     */
+    Boolean inputFlag = false;
+
+    /**
      * 一覧画面生成時の処理
      * @param savedInstanceState
      */
@@ -48,7 +62,7 @@ public class FolderListActivity extends AppCompatActivity {
     }
 
     /**
-     * 与えられたdirectory以下のデータ一覧を取得して表示
+     * 画面全体の表示処理
      * @param id
      */
     public void createView(Integer id) {
@@ -86,7 +100,7 @@ public class FolderListActivity extends AppCompatActivity {
     }
 
     /**
-     *
+     * リスト表示部分
      * @param tables
      */
     public void createList(String... tables) {
@@ -112,10 +126,16 @@ public class FolderListActivity extends AppCompatActivity {
      * @param fragment
      */
     public void createSelectionFragment(SelectionFragment fragment) {
-        // Activityにフラグメントを追加する
-        FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
-        tr.add(R.id.selection_container, fragment);
-        tr.commit();
+        // 選択フラグメントが表示されていないときだけ表示処理を実行する
+        if (!selectionFlag) {
+            // フラグをtrueにする
+            selectionFlag = true;
+
+            // Activityにフラグメントを追加する
+            FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
+            tr.add(R.id.selection_container, fragment);
+            tr.commit();
+        }
     }
 
     /**
@@ -123,10 +143,16 @@ public class FolderListActivity extends AppCompatActivity {
      * @param fragment
      */
     public void createInputFragment(InputFragment fragment) {
-        // Activityにフラグメントを追加する
-        FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
-        tr.add(R.id.folder_list, fragment);
-        tr.commit();
+        // 追加・編集フラグメントが表示されていないときだけ表示処理を実行する
+        if (!inputFlag) {
+            // フラグをtrueにする
+            inputFlag = true;
+
+            // Activityにフラグメントを追加する
+            FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
+            tr.add(R.id.folder_list, fragment);
+            tr.commit();
+        }
     }
 
     /**
