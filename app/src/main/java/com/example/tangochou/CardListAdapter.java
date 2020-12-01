@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.model.CardModel;
 import com.example.model.IFile;
 
 import java.util.ArrayList;
@@ -30,13 +31,24 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
      */
     static class ViewHolder extends RecyclerView.ViewHolder {
         ConstraintLayout linearLayout;
+
+        /**
+         * カード名を表示するためのビュー
+         */
         TextView cardName;
+
+        /**
+         * カード
+         */
+        public CardModel card;
 
         ViewHolder(View v) {
             super(v);
             linearLayout = v.findViewById(R.id.folder_list);
             cardName = v.findViewById(R.id.item_name);
         }
+
+        public CardModel getCard(){return card;}
     }
 
     /**
@@ -71,6 +83,8 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
     public void onBindViewHolder(@NonNull CardListAdapter.ViewHolder holder, final int position) {
         // 並び順を更新
         holder.cardName.setText(dataset.get(position).getName());
+
+        holder.card = (CardModel) dataset.get(position);
     }
 
     /**

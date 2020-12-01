@@ -257,4 +257,9 @@ public class FolderListPresenter {
     public Integer getIdToBack(Integer id) {
         return getFile("folder", id).getParentId();
     }
+
+    public void delete(String table, Integer id) {
+        SQLiteDatabase db = new DBOpenHelper(context).getReadableDatabase();
+        db.delete(table, "id = " +  id, null);
+    }
 }
