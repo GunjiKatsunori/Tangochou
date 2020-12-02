@@ -14,17 +14,34 @@ import androidx.fragment.app.Fragment;
  * @author 郡司克徳
  * @version 1.0.0
  */
-public class SelectionFragment extends Fragment {
+public abstract class SelectionFragment extends Fragment {
     View view;
     Fragment thisFragment = this;
-    Integer selectedId;
 
     /**
-     * コンストラクタ
-     * @param selectedId 新規追加先のフォルダのID
+     * 上のボタンに表示する文字列
      */
-    public SelectionFragment(Integer selectedId) {
-        this.selectedId = selectedId;
+    String textButton1;
+
+    /**
+     * 下のボタンに表示する文字列
+     */
+    String textButton2;
+
+    /**
+     * textButton1を設定
+     * @param textButton1
+     */
+    public void setTextButton1(String textButton1) {
+        this.textButton1 = textButton1;
+    }
+
+    /**
+     * textButton2を設定
+     * @param textButton2
+     */
+    public void setTextButton2(String textButton2) {
+        this.textButton2 = textButton2;
     }
 
     /**
@@ -40,25 +57,22 @@ public class SelectionFragment extends Fragment {
 
         // 表示の編集
         Button selectionButton1 = view.findViewById(R.id.selection1);
-        selectionButton1.setText("学習セット");
+        selectionButton1.setText(textButton1);
         Button selectionButton2 = view.findViewById(R.id.selection2);
-        selectionButton2.setText("フォルダ");
+        selectionButton2.setText(textButton2);
 
         // selection button 1 のクリックリスナー
         selectionButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputFragment inputFragment = new SeriesAddFragment(selectedId);
-                ((FolderListActivity)getContext()).createInputFragment(inputFragment);
+                // 上のボタンを押したときの処理
+                onClickButton1();
 
                 // フラグメント表示終了
                 getFragmentManager()
                         .beginTransaction()
                         .remove(thisFragment)
                         .commit();
-
-                // 画面に変更を反映
-                reloadActivity();
             }
         });
 
@@ -66,17 +80,14 @@ public class SelectionFragment extends Fragment {
         selectionButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputFragment inputFragment = new FolderAddFragment(selectedId);
-                ((FolderListActivity)getContext()).createInputFragment(inputFragment);
+                // 下のボタンを押したときの処理
+                onClickButton2();
 
                 // フラグメント表示終了
                 getFragmentManager()
                         .beginTransaction()
                         .remove(thisFragment)
                         .commit();
-
-                // 画面に変更を反映
-                reloadActivity();
             }
         });
 
@@ -84,10 +95,12 @@ public class SelectionFragment extends Fragment {
     }
 
     /**
-     * 画面の再表示
-     * データ更新を反映するため
+     * 上のボタンを押したときの処理
      */
-    public void reloadActivity() {
-        ((FolderListActivity)getContext()).createView(selectedId);
-    }
+    public abstract void onClickButton1();
+
+    /**
+     * 下のボタンを押したときの処理
+     */
+    public abstract void onClickButton2();
 }

@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,6 +49,12 @@ public class FolderListActivity extends AppCompatActivity {
      * されていない     : false
      */
     Boolean inputFlag = false;
+
+    /**
+     * idを返す
+     * @return
+     */
+    public Integer getId() {return id;}
 
     /**
      * 一覧画面生成時の処理
@@ -92,7 +99,8 @@ public class FolderListActivity extends AppCompatActivity {
         fButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SelectionFragment fragment = new SelectionFragment(ID);
+                AdditionSelectionFragment fragment = new AdditionSelectionFragment();
+                fragment.setSelectedId(ID);
                 createSelectionFragment(fragment);
             }
         });
@@ -142,7 +150,7 @@ public class FolderListActivity extends AppCompatActivity {
      * 追加・編集フラグメントの表示
      * @param fragment
      */
-    public void createInputFragment(InputFragment fragment) {
+    public void createInputFragment(Fragment fragment) {
         // 追加・編集フラグメントが表示されていないときだけ表示処理を実行する
         if (!inputFlag) {
             // フラグをtrueにする

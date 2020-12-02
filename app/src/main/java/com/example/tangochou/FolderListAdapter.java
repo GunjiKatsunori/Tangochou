@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.model.CardModel;
@@ -47,6 +48,13 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Vi
             rightSide = v.findViewById(R.id.item_right_side);
         }
     }
+
+    /**
+     * 長押し後のフラグメントが表示されているかを表すフラグ
+     * 両面表示されている: true
+     * されていない     : false
+     */
+    boolean editionFlag = false;
 
     /**
      * コンストラクタ
@@ -120,15 +128,12 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Vi
         holder.itemName.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                InputFragment fragment = null;
-                if (dataset.get(position) instanceof FolderModel) {
-                    // フォルダーを長押ししたとき、フォルダ編集フラグメントを表示
-                    fragment = new FolderUpdateFragment(dataset.get(position).getId());
-                }else if (dataset.get(position) instanceof SeriesModel) {
-                    // 学習セットを長押ししたとき、学習セット編集フラグメントを表示
-                    fragment = new SeriesUpdateFragment(dataset.get(position).getId());
-                }
-                ((FolderListActivity)context).createInputFragment(fragment);
+                // Activityにフラグメントを追加する
+                EditionSelectionFragment fragment = new EditionSelectionFragment();
+                fragment.setFile(dataset.get(position));
+
+                ((FolderListActivity)context).createSelectionFragment(fragment);
+
                 return true;
             }
         });
