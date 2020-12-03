@@ -1,5 +1,10 @@
 package com.example.model;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+
+import com.example.tangochou.DBOpenHelper;
+
 /**
  * Cardテーブルのデータを格納するモデルクラス
  * @author 郡司克徳
@@ -75,4 +80,16 @@ public class CardModel implements IFile {
 
     @Override
     public Integer getParentId() {return getSeriesId();}
+
+    public void update(DBOpenHelper helper) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+
+        // 更新データをcontentValueとして用意する
+        ContentValues cv = new ContentValues();
+        cv.put("head", head);
+        cv.put("tail", tail);
+
+        String whereClause = "id = " + "'" + id + "'";
+        db.update("card", cv, whereClause, null);
+    }
 }

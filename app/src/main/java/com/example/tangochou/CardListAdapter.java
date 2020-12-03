@@ -75,6 +75,15 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
 
         // クリック時の処理をここにかく
         // クリック時は編集フラグメントを表示
+        TextView itemName = view.findViewById(R.id.item_name);
+        itemName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CardInputFragment fragment = new CardEditFragment(holder.card.getId());
+
+                ((CardListActivity)context).createCardInputFragment(fragment);
+            }
+        });
 
         return holder;
     }

@@ -43,6 +43,12 @@ public class CardListActivity extends AppCompatActivity {
     Boolean inputFlag = false;
 
     /**
+     * idを返す
+     * @return
+     */
+    public Integer getId() {return id;}
+
+    /**
      * 一覧画面生成時の処理
      * @param savedInstanceState
      */
