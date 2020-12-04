@@ -1,6 +1,9 @@
 package com.example.tangochou;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -18,6 +21,19 @@ public class FolderUpdateFragment extends InputFragment {
      */
     FolderUpdateFragment(Integer selectedId) {
         super("フォルダ名変更", "変更", selectedId);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+
+        // テキストボックスに変更前の名前を表示
+        EditText textBox = view.findViewById(R.id.input_box);
+        FolderListPresenter presenter = new FolderListPresenter(getContext());
+        String fileName = presenter.getFile("folder", selectedId).getName();
+        textBox.setText(fileName);
+
+        return view;
     }
 
     /**

@@ -55,7 +55,6 @@ public class InputFragment extends Fragment{
         cancelButton.setText(cancellation);
         Button inputButton = view.findViewById(R.id.input_button);
         inputButton.setText(actionName);
-        EditText textBox = view.findViewById(R.id.input_box);
 
         // input button のクリックリスナー
         inputButton.setOnClickListener(new View.OnClickListener() {
