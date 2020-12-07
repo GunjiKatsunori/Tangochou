@@ -1,45 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/input_fragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/input_text_view"
-        android:layout_width="214dp"
-        android:layout_height="20dp"
-        android:text=""
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp"
-        android:gravity="center_horizontal"/>
+    <FrameLayout
+        android:layout_width="411dp"
+        android:layout_height="252dp"
+        android:layout_marginTop="160dp"
+        android:background="#ffffff"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/input_box"
-        android:layout_width="136dp"
-        android:layout_height="42dp"
-        tools:layout_editor_absoluteX="51dp"
-        tools:layout_editor_absoluteY="57dp">
+        <TextView
+            android:id="@+id/input_text_view"
+            android:layout_width="214dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="96dp"
+            android:layout_marginLeft="96dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:text=""
+            app:layout_constraintBottom_toTopOf="@+id/input_box"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
-    </EditText>
-    <LinearLayout
-        android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/input_box"
+            android:layout_width="136dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="136dp"
+            android:layout_marginLeft="136dp"
+            android:layout_marginTop="80dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/input_text_view">
+
+        </EditText>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="215dp"
+            android:layout_height="57dp"
+            android:layout_marginStart="96dp"
+            android:layout_marginLeft="96dp"
+            android:layout_marginTop="160dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/input_box">
+
+            <Button
+                android:id="@+id/cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <Button
+                android:id="@+id/input_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal">
-        <Button
-            android:id="@+id/cancel_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""/>
+        app:barrierDirection="left" />
 
-        <Button
-            android:id="@+id/input_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""/>
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -77,18 +77,24 @@ public class FolderListActivity extends AppCompatActivity {
         final Integer ID = id;
 
         // ツールバーのアイコンなどの表示
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        // 「戻る」ボタンクリック時のアクション
-        // IDからディレクトリを検索し、一覧表示画面を再描画
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FolderListPresenter presenter = new FolderListPresenter(getApplicationContext());
-                createView(presenter.getIdToBack(ID));
-            }
-        });
+        Toolbar toolbar = findViewById(R.id.tool_bar);
+        if (!id.equals(0)) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+            // 「戻る」ボタンクリック時のアクション
+            // IDからディレクトリを検索し、一覧表示画面を再描画
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FolderListPresenter presenter = new FolderListPresenter(getApplicationContext());
+                    createView(presenter.getIdToBack(ID));
+                }
+            });
+        } else {
+            //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            setSupportActionBar(null);
+        }
 
         // Folderのリスト表示
         createList("folder", "series");
